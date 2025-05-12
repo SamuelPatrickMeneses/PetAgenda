@@ -15,6 +15,35 @@ class Validations
 
         return true;
     }
+    public static function isEmail($attribute, $obj)
+    {
+        if (!filter_var($obj->$attribute, FILTER_VALIDATE_EMAIL)) {
+            $obj->addError($attribute, 'Deve ser um email valido!');
+            return false;
+        }
+
+        return true;
+    }
+
+    public static function isPasswordStrong($obj)
+    {
+        if (preg_match('/[A-Z]/', $obj->password) &&
+            preg_match('/[a-z]/', $obj->password) &&
+            preg_match('/[0-9]/', $obj->password)) {
+            return true;
+        }
+        $obj->addError('password', 'Deve ser uma senha forse!');
+        return false;
+    }
+
+    public static function match(string $field, string $patern, $obj)
+    {
+        if (!preg_match($patern, $obj->$field)) {
+            $obj->addError($field, "Don't math the patern $patern");
+            return false;
+        }
+        return true;
+    }
 
     public static function passwordConfirmation($obj)
     {
