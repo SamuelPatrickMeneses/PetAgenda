@@ -10,7 +10,6 @@ use Lib\FlashMessage;
 
 class LoginController extends Controller
 {
-  
     public function index(): void
     {
         $title = 'login';
@@ -21,11 +20,11 @@ class LoginController extends Controller
         $params = $request->getParam('user');
         $user = User::findBy(['phone' => $params['phone']]);
         if ($user && $user->authenticate($params['password'])) {
-          Auth::login($user);
-          FlashMessage::success('Login realizado com sucesso!');
+            Auth::login($user);
+            FlashMessage::success('Login realizado com sucesso!');
 
           // Verificar tipo de usuário
-          $this->redirectTo(route('root'));
+            $this->redirectTo(route('root'));
         } else {
             FlashMessage::danger('telefone e/ou senha inválidos!');
             $this->redirectTo(route('login.view'));

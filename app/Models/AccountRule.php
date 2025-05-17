@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Lib\Validations;
@@ -20,7 +21,7 @@ class AccountRule extends Model
     {
         Validations::notEmpty('rule_id', $this);
         Validations::isIdFrom('rule_id', $this, UserRule::class);
-        
+
         Validations::notEmpty('user_id', $this);
         Validations::isIdFrom('user_id', $this, User::class);
     }

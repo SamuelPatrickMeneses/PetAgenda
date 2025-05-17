@@ -27,9 +27,10 @@ class Validations
 
     public static function isPasswordStrong($obj)
     {
-        if (preg_match('/[A-Z]/', $obj->password) &&
-            preg_match('/[a-z]/', $obj->password) &&
-            preg_match('/[0-9]/', $obj->password)) {
+        $verification = preg_match('/[A-Z]/', $obj->password)
+        && preg_match('/[a-z]/', $obj->password)
+        && preg_match('/[0-9]/', $obj->password);
+        if ($verification) {
             return true;
         }
         $obj->addError('password', 'Deve ser uma senha forse!');
@@ -108,7 +109,7 @@ class Validations
     }
     public static function isIdFrom($field, $obj, $related)
     {
-      $entity = $related::findById($obj->$field);
-      return isset($entity) && $entity->id === $obj->$field;
+        $entity = $related::findById($obj->$field);
+        return isset($entity) && $entity->id === $obj->$field;
     }
 }

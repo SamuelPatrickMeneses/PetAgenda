@@ -21,8 +21,8 @@ class User extends Model
       'created_at',
       'updated_at'
     ];
-    
-    protected array   $rules;
+
+    protected array $rules;
     protected ?string $password = null;
     protected ?string $password_confirmation = null;
     public function validates(): void
@@ -33,9 +33,9 @@ class User extends Model
 
         Validations::isPasswordStrong($this);
         if ($this->newRecord()) {
-          if(Validations::passwordConfirmation($this)) {
-            $this->encrypted_password  = $this->password;
-          }
+            if (Validations::passwordConfirmation($this)) {
+                $this->encrypted_password  = $this->password;
+            }
         }
     }
 
@@ -58,21 +58,21 @@ class User extends Model
 
     public static function findByPhone(string $phone): User | null
     {
-      return User::findBy(['phone' => $phone]);
+        return User::findBy(['phone' => $phone]);
     }
 
     public function grant(string $rule)
     {
-      $rule = UserRule::findByRuleType($rule);
-      if (isset($rule) && $this->id) {
-        $grant = new AccountRule([
-          'rule_id' => $rule->id,
-          'user_id' => $this->id
-        ]);
-        $grant->save();
-        return true;
-      }
-      return false;
+        $rule = UserRule::findByRuleType($rule);
+        if (isset($rule) && $this->id) {
+            $grant = new AccountRule([
+            'rule_id' => $rule->id,
+            'user_id' => $this->id
+            ]);
+            $grant->save();
+            return true;
+        }
+        return false;
     }
 
     public function __set(string $property, mixed $value): void
@@ -84,24 +84,23 @@ class User extends Model
             $this->newRecord() &&
             $value !== null && $value !== ''
         ) {
-            parent::__set( 'encrypted_password', password_hash($value, PASSWORD_DEFAULT));
+            parent::__set('encrypted_password', password_hash($value, PASSWORD_DEFAULT));
         }
     }
 
     public function hasRule(string $rule)
     {
-      if (!isset($this->rules)){
-        $btm = $this->BelongsToMany(
-          UserRule::class, 
-          'account_rules',
-          'user_id',
-          'rule_id'
-        );
-        $this->rules = array_map(function($obj){
-          return $obj->rule_type;
-        }, $btm->get());
-
-      }
-      return in_array($rule, $this->rules);
+        if (!isset($this->rules)) {
+            $btm = $this->BelongsToMany(
+                UserRule::class,
+                'account_rules',
+                'user_id',
+                'rule_id'
+            );
+            $this->rules = array_map(function ($obj) {
+                return $obj->rule_type;
+            }, $btm->get());
+        }
+        return in_array($rule, $this->rules);
     }
 }
