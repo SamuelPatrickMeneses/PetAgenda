@@ -106,4 +106,9 @@ class Validations
 
         return true;
     }
+    public static function isIdFrom($field, $obj, $related)
+    {
+      $entity = $related::findById($obj->$field);
+      return isset($entity) && $entity->id === $obj->$field;
+    }
 }
