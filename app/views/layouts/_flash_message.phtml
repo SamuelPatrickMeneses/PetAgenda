@@ -1,6 +1,20 @@
-<?php foreach (\Lib\FlashMessage::get() as $type => $msg) : ?>
-    <div class="alert alert-<?= $type ?> alert-dismissible" role="alert">
-        <div><?= $msg ?></div>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-<? endforeach; ?>
+<?php $flash =  isset($flash) ? $flash : \Lib\FlashMessage::get(); ?>
+<div class="container fixed-top mt-4">
+    <?php if (isset($flash['danger'])) : ?>
+            <p class="alert alert-danger mb-2 fade show loadbar" role="alert">
+                <?= $flash['danger'] ?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </p>
+    <?endif; ?>
+    <?php if (isset($flash['success'])) :?>
+            <p class="alert alert-success mb-2 fade show loadbar" role="alert">
+                <?= $flash['success'] ?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </p>
+    <?php endif; ?>
+</div>
+
