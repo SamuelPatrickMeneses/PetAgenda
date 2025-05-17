@@ -24,3 +24,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+function closeAlerts() {
+    setTimeout(() => {
+        $(".alert").alert('close');
+    },5000)
+}
+
+
+$(closeAlerts);
