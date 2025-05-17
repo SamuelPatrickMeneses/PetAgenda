@@ -7,29 +7,44 @@ use Core\Database\ActiveRecord\Model;
 
 /**
  * @property int $id
- * @property string $name
- * @property string $email
+ * @property string $phone
  * @property string $encrypted_password
- * @property string $avatar_name
  */
 class User extends Model
 {
     protected static string $table = 'users';
-    protected static array $columns = ['name', 'email', 'encrypted_password', 'avatar_name'];
-
+    protected static array $columns = [
+      'phone',
+      'encrypted_password',
+      'is_active',
+      'last_login',
+      'created_at',
+      'updated_at'
+    ];
+    
+    protected array   $rules;
     protected ?string $password = null;
     protected ?string $password_confirmation = null;
-
     public function validates(): void
     {
-        Validations::notEmpty('name', $this);
-        Validations::notEmpty('email', $this);
+        Validations::notEmpty('phone', $this);
+        Validations::uniqueness('phone', $this);
+        Validations::match('phone', '/^[0-9]{11}$/', $this);
 
-        Validations::uniqueness('email', $this);
-
+        Validations::isPasswordStrong($this);
         if ($this->newRecord()) {
-            Validations::passwordConfirmation($this);
+          if(Validations::passwordConfirmation($this)) {
+            $this->encrypted_password  = $this->password;
+          }
         }
+    }
+
+    public function validateLogin(): bool
+    {
+        Validations::notEmpty('phone', $this);
+        Validations::notEmpty('password', $this);
+        Validations::match('phone', '/^[0-9]{11}$/', $this);
+        return $this->isValid();
     }
 
     public function authenticate(string $password): bool
@@ -41,9 +56,23 @@ class User extends Model
         return password_verify($password, $this->encrypted_password);
     }
 
-    public static function findByEmail(string $email): User | null
+    public static function findByPhone(string $phone): User | null
     {
-        return User::findBy(['email' => $email]);
+      return User::findBy(['phone' => $phone]);
+    }
+
+    public function grant(string $rule)
+    {
+      $rule = UserRule::findByRuleType($rule);
+      if (isset($rule) && $this->id) {
+        $grant = new AccountRule([
+          'rule_id' => $rule->id,
+          'user_id' => $this->id
+        ]);
+        $grant->save();
+        return true;
+      }
+      return false;
     }
 
     public function __set(string $property, mixed $value): void
@@ -51,11 +80,28 @@ class User extends Model
         parent::__set($property, $value);
 
         if (
-            $property === 'password' &&
+            $property === 'encrypted_password' &&
             $this->newRecord() &&
             $value !== null && $value !== ''
         ) {
-            $this->encrypted_password = password_hash($value, PASSWORD_DEFAULT);
+            parent::__set( 'encrypted_password', password_hash($value, PASSWORD_DEFAULT));
         }
+    }
+
+    public function hasRule(string $rule)
+    {
+      if (!isset($this->rules)){
+        $btm = $this->BelongsToMany(
+          UserRule::class, 
+          'account_rules',
+          'user_id',
+          'rule_id'
+        );
+        $this->rules = array_map(function($obj){
+          return $obj->rule_type;
+        }, $btm->get());
+
+      }
+      return in_array($rule, $this->rules);
     }
 }
