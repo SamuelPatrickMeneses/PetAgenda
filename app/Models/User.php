@@ -21,10 +21,10 @@ class User extends Model
       'created_at',
       'updated_at'
     ];
-
+    /** @var array<string> */
     protected array $rules;
-    protected ?string $password = null;
-    protected ?string $password_confirmation = null;
+    protected string $password = '';
+    protected string $password_confirmation = '';
     public function validates(): void
     {
         Validations::notEmpty('phone', $this);
@@ -61,7 +61,7 @@ class User extends Model
         return User::findBy(['phone' => $phone]);
     }
 
-    public function grant(string $rule)
+    public function grant(string $rule): bool
     {
         $rule = UserRule::findByRuleType($rule);
         if (isset($rule) && $this->id) {
@@ -88,7 +88,7 @@ class User extends Model
         }
     }
 
-    public function hasRule(string $rule)
+    public function hasRule(string $rule): bool
     {
         if (!isset($this->rules)) {
             $btm = $this->BelongsToMany(
@@ -97,9 +97,11 @@ class User extends Model
                 'user_id',
                 'rule_id'
             );
-            $this->rules = array_map(function ($obj) {
+          /** @var UserRule[] $rules */
+            $rules = $btm->get();
+            $this->rules = array_map(function (UserRule $obj) {
                 return $obj->rule_type;
-            }, $btm->get());
+            }, $rules);
         }
         return in_array($rule, $this->rules);
     }

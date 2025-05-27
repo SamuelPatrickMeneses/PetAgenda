@@ -27,13 +27,14 @@ class Validations
 
     public static function isPasswordStrong($obj)
     {
-        $verification = preg_match('/[A-Z]/', $obj->password)
-        && preg_match('/[a-z]/', $obj->password)
-        && preg_match('/[0-9]/', $obj->password);
-        if ($verification) {
+        if (
+            preg_match('/[A-Z]/', $obj->password) &&
+            preg_match('/[a-z]/', $obj->password) &&
+            preg_match('/[0-9]/', $obj->password)
+        ) {
             return true;
         }
-        $obj->addError('password', 'Deve ser uma senha forse!');
+        $obj->addError('encrypted_password', 'Deve ser uma senha forse!');
         return false;
     }
 
