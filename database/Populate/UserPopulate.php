@@ -13,7 +13,7 @@ class UserPopulate
         $basePassword = 'SenhaSenha';
         $basePhone = '0000000000';
 
-        for ($i = 0; $i < $numberOfResgisters; $i++) {
+        for ($i = 1; $i <= $numberOfResgisters; $i++) {
           $password = $basePassword . strval($i);
           $user = new User([
               'password' =>  $password,
