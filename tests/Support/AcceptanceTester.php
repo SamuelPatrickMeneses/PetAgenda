@@ -31,8 +31,7 @@ use Tests\Support;
  */
 class AcceptanceTester extends \Codeception\Actor
 {
-    /** @phpstan-ignore-next-line */
-    use _generated\AcceptanceTesterActions;
+    //use _generated\AcceptanceTesterActions;
 
     /**
      * Define custom actions here
