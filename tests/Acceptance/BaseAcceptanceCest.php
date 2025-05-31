@@ -12,7 +12,7 @@ class BaseAcceptanceCest
     {
         EnvLoader::init();
         Database::create();
-        Database::migrate();
+        Database::populate();
     }
 
     public function _after(AcceptanceTester $page): void
