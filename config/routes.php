@@ -10,9 +10,11 @@ use Core\Router\Route;
 Route::get('/login', [LoginController::class, 'index'])->name('login.view');
 Route::post('/login', [LoginController::class, 'authenticate'])->name('authenticate');
 
+Route::middleware('auth')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('root');
+});
 Route::middleware('client')->group(function () {
     Route::middleware('auth')->group(function () {
-        Route::get('/', [HomeController::class, 'index'])->name('root');
         Route::get('/test/client', [TestController::class, 'client'])->name('test.client');
     });
 });
