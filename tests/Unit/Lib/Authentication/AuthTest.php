@@ -15,10 +15,9 @@ class AuthTest extends TestCase
         parent::setUp();
         $_SESSION = [];
         $this->user = new User([
-            'name' => 'User 1',
-            'email' => 'fulano@example.com',
-            'password' => '123456',
-            'password_confirmation' => '123456'
+            'phone' => '00000000001',
+            'password' => '123456aB',
+            'password_confirmation' => '123456aB'
         ]);
         $this->user->save();
     }
@@ -39,7 +38,7 @@ class AuthTest extends TestCase
     public function test_user(): void
     {
         Auth::login($this->user);
-
+        /** @var User $userFromSession */
         $userFromSession = Auth::user();
 
         $this->assertEquals($this->user->id, $userFromSession->id);

@@ -2,7 +2,11 @@
 
 namespace Core\Database;
 
+use App\Models\AccountRule;
 use Core\Constants\Constants;
+use Database\Populate\AccountRulePopulate;
+use Database\Populate\UserPopulate;
+use Database\Populate\UserRulePopulate;
 use PDO;
 
 class Database
@@ -48,6 +52,7 @@ class Database
 
     public static function migrate(): void
     {
+        /** @var string $sql */
         $sql = file_get_contents(Constants::databasePath()->join('schema.sql'));
         self::getDatabaseConn()->exec($sql);
     }
@@ -55,5 +60,13 @@ class Database
     public static function exec(string $sql): void
     {
         self::getDatabaseConn()->exec($sql);
+    }
+
+    public static function populate(): void
+    {
+      static::migrate();
+      UserPopulate::populate();
+      UserRulePopulate::populate();
+      AccountRulePopulate::populate();
     }
 }
