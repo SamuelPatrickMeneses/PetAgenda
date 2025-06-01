@@ -5,7 +5,7 @@ namespace Tests\Acceptance\User;
 use Tests\Acceptance\BaseAcceptanceCest;
 use Tests\Support\AcceptanceTester;
 
-class UserPetCest extends BaseAcceptanceCest
+class UserPetAcceptanceCest extends BaseAcceptanceCest
 {
     public function loginAndGoToPetView(AcceptanceTester $page): void
     {
