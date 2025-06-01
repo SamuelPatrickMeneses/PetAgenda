@@ -10,11 +10,12 @@ use Lib\FlashMessage;
 
 class PetController extends Controller
 {
-    public function index(): void
+    public function index(Request $req): void
     {
         $title = 'Seus Pets';
+        $page = $req->getParam('page');
         $user = Auth::user();
-        $paginator =  Pet::findActivesByUserId($user->id);
+        $paginator =  Pet::findActivesByUserId($user->id, $page);
         $this->render('pet/index', compact('title', 'paginator'));
     }
     public function newForm(): void
