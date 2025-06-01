@@ -28,4 +28,23 @@ CREATE TABLE `account_rules` (
   FOREIGN KEY (user_id) REFERENCES users (id),
   FOREIGN KEY (rule_id) REFERENCES user_rules (id)
 );
+
+DROP TABLE IF EXISTS `pets`;
+
+CREATE TABLE `pets` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `user_id` int NOT NULL COMMENT 'Tutor',
+  `name` varchar(50) NOT NULL,
+  `specie` enum('cachorro','gato','ave','roedor','reptil','outro') NOT NULL,
+  `breed` varchar(50) COMMENT 'Raça (opcional)',
+  `description` text COMMENT 'Detalhes físicos/comportamentais',
+  `weight` decimal(5,2) COMMENT 'Em kg',
+  `birth_date` date,
+  `photo_url` varchar(255),
+  `active` boolean DEFAULT 1,
+  `created_at` timestamp DEFAULT (now()),
+  `updated_at` timestamp DEFAULT (now()),
+  FOREIGN KEY (user_id) REFERENCES users (id)
+);
+
 SET foreign_key_checks = 1;
