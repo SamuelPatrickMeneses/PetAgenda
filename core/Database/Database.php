@@ -5,6 +5,7 @@ namespace Core\Database;
 use App\Models\AccountRule;
 use Core\Constants\Constants;
 use Database\Populate\AccountRulePopulate;
+use Database\Populate\PetPopulate;
 use Database\Populate\UserPopulate;
 use Database\Populate\UserRulePopulate;
 use PDO;
@@ -68,5 +69,6 @@ class Database
       UserPopulate::populate();
       UserRulePopulate::populate();
       AccountRulePopulate::populate();
+      PetPopulate::populate();
     }
 }
