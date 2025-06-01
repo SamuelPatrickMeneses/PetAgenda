@@ -21,8 +21,8 @@ Route::middleware('client')->group(function () {
         Route::get('/my/pets/edit/{id}', [PetController::class, 'edit'])->name('user.pets.edit');
         Route::get('/my/pets/new', [PetController::class, 'newForm'])->name('user.pets.create');
         Route::post('/my/pets/create', [PetController::class, 'create']);
-        Route::post('/my/pets/update/{id}', [PetController::class, 'update']);
-        Route::get('/my/pets/delete/{id}', [PetController::class, 'delete'])->name('user.pets.delete');
+        Route::put('/my/pets/update/{id}', [PetController::class, 'update']);
+        Route::delete('/my/pets/delete/{id}', [PetController::class, 'delete'])->name('user.pets.delete');
     });
 });
 

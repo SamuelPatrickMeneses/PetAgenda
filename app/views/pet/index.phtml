@@ -24,7 +24,16 @@
             <td><?= $pet->birth_date ?? '' ?></td>
             <td> 
                 <div class="d-grid">
-                    <a class="btn btn-danger btn-block" id="delete-<?= $pet->id?>" href="/my/pets/delete/<?= $pet->id ?>">delete</a>
+                    <form  action="/my/pets/delete/<?= $pet->id ?>" method="POST">
+                        <input type="hidden" id="_method" name="_method" value="DELETE" />
+                        <input 
+                            class="btn btn-danger btn-block" 
+                            type="submit" 
+                            id="delete-<?= $pet->id?>"
+                           >
+                              delete
+                        </a>
+                    <form>
                 </div>
             </td>
             <td> 
