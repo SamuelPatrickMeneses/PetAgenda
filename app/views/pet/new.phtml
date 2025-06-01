@@ -1,0 +1,59 @@
+ <form id="petForm" method="POST" action="/my/pets/create" enctype="multipart/form-data">
+  <!-- Nome do Pet -->
+  <div class="mb-3">
+      <label for="name" class="form-label">Nome do Pet</label>
+      <input type="text" class="form-control" id="name" name="name" required maxlength="50">
+  </div>
+  
+  <!-- Espécie -->
+  <div class="mb-3">
+      <label for="specie" class="form-label">Espécie</label>
+      <select class="form-select" id="specie" name="specie" required>
+          <option value="" selected disabled>Selecione a espécie</option>
+          <option value="cachorro">Cachorro</option>
+          <option value="gato">Gato</option>
+          <option value="ave">Ave</option>
+          <option value="roedor">Roedor</option>
+          <option value="reptil">Réptil</option>
+          <option value="outro">Outro</option>
+      </select>
+  </div>
+  
+  <!-- Raça -->
+  <div class="mb-3">
+      <label for="breed" class="form-label">Raça (opcional)</label>
+      <input type="text" class="form-control" id="breed" name="breed" maxlength="50">
+  </div>
+  
+  <!-- Descrição -->
+  <div class="mb-3">
+      <label for="description" class="form-label">Descrição</label>
+      <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+      <div class="form-text">Detalhes físicos e comportamentais do pet</div>
+  </div>
+  
+  <!-- Peso -->
+  <div class="mb-3">
+      <label for="weight" class="form-label">Peso (kg)</label>
+      <input type="number" class="form-control" id="weight" name="weight" step="0.01" min="0" max="999.99">
+  </div>
+  
+  <!-- Data de Nascimento -->
+  <div class="mb-3">
+      <label for="birth_date" class="form-label">Data de Nascimento</label>
+      <input type="date" class="form-control" id="birth_date" name="birth_date">
+  </div>
+  
+  <!-- Foto -->
+  <div class="mb-3">
+      <label for="photo" class="form-label">Foto do Pet</label>
+      <input class="form-control" type="file" id="photo" name="photo" accept="image/*">
+  </div>
+  
+  
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <button type="submit" class="btn btn-primary">
+          <i class="bi bi-save"></i> Cadastrar Pet
+      </button>
+  </div>
+</form>
