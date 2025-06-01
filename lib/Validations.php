@@ -25,12 +25,77 @@ class Validations
         return true;
     }
 
+    public static function inEnum(string $attribute, array $enum, $obj): bool
+    {
+        if (!in_array($obj->$attribute, $enum)) {
+            $obj->addError($attribute, 'Campo invalida!');
+            return false;
+        }
+        return true;
+    }
+
+    public static function isString(string $attribute, $obj): bool
+    {
+        if (!is_string($obj->$attribute)) {
+            $obj->addError($attribute, 'Deve conter um texto!');
+            return false;
+        }
+        return true;
+    }
+
+    public static function isInt(string $attribute, $obj): bool
+    {
+        if (!is_numeric($obj->$attribute) || !is_int(intval($obj->$attribute))) {
+            $obj->addError($attribute, 'Deve conter um numero inteiro!');
+            return false;
+        }
+        return true;
+    }
+
+    public static function isFloat(string $attribute, $obj): bool
+    {
+        if (!is_numeric($obj->$attribute) || !is_float(floatval($obj->$attribute))) {
+            $obj->addError($attribute, 'Deve conter um numero real!');
+            return false;
+        }
+        return true;
+    }
+
+    public static function inRange(string $attribute, int | float $min, int | float $max, $obj): bool
+    {
+        $val = floatval($obj->$attribute);
+        if ($val >= $min) {
+            $obj->addError($attribute, "Deve ser maior ou igual à $min!");
+            return false;
+        }
+        if ($val <= $max) {
+            $obj->addError($attribute, "Deve ser menor ou igual à $max!");
+            return false;
+        }
+        return true;
+    }
+
+    public static function inRangeLength(string $attribute, int | float $min, int | float $max, $obj): bool
+    {
+        $val = strlen($obj->$attribute);
+        if ($val < $min) {
+            $obj->addError($attribute, "Deve ser maior ou igual à $min caracteres!");
+            return false;
+        }
+        if ($val > $max) {
+            $obj->addError($attribute, "Deve ser menor ou igual à $max caracteres!");
+            return false;
+        }
+        return true;
+    }
+
     public static function isPasswordStrong($obj)
     {
         if (
             preg_match('/[A-Z]/', $obj->password) &&
             preg_match('/[a-z]/', $obj->password) &&
-            preg_match('/[0-9]/', $obj->password)
+            preg_match('/[0-9]/', $obj->password) &&
+            strlen($obj->password) >= 8
         ) {
             return true;
         }
