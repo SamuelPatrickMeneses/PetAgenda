@@ -132,7 +132,7 @@ class Pet extends Model
     {
         if (count($data)) {
             foreach ($data as $key => $val) {
-              $this->$key = $val;
+                $this->$key = $val;
             }
             $this->updated_at = gmdate('Y-m-d');
             return $this->save();
