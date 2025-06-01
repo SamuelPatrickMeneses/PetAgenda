@@ -15,7 +15,7 @@ class PetController extends Controller
         $title = 'Seus Pets';
         $page = $req->getParam('page');
         $user = Auth::user();
-        $paginator =  Pet::findActivesByUserId($user->id, $page) ?? 1;
+        $paginator =  Pet::findActivesByUserId($user->id, $page ?? 1);
         $this->render('pet/index', compact('title', 'paginator'));
     }
     public function newForm(): void
