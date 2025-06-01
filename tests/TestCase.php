@@ -9,6 +9,7 @@ class TestCase extends FrameworkTestCase
 {
     public function setUp(): void
     {
+        Database::drop();
         Database::create();
         Database::migrate();
     }

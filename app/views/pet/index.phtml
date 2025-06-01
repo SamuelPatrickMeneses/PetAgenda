@@ -1,0 +1,51 @@
+<div class="container mt-4">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Specie</th>
+                <th scope="col">Breed</th>
+                <th scope="col">Birth date</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <?php
+          $pets = $paginator->registers();
+          $i = 1;
+          foreach($pets as $pet):
+        ?>
+        <tbody>
+            <td><?= $i++ ?></td>
+            <td id="<?= $pet->name ?>" ><?= $pet->name ?></td>
+            <td><?= $pet->specie ?? '' ?></td>
+            <td><?= $pet->breed ?? '' ?></td>
+            <td><?= $pet->birth_date ?? '' ?></td>
+            <td> 
+                <div class="d-grid">
+                    <form  action="/my/pets/delete/<?= $pet->id ?>" method="POST">
+                        <input type="hidden" id="_method" name="_method" value="DELETE" />
+                        <input 
+                            class="btn btn-danger btn-block" 
+                            type="submit" 
+                            id="delete-<?= $pet->id?>"
+                           >
+                              delete
+                        </a>
+                    <form>
+                </div>
+            </td>
+            <td> 
+                <div class="d-grid">
+                    <a class="btn btn-primary btn-block" id="edit-<?= $pet->id?>" href="/my/pets/edit/<?= $pet->id ?>">edite</a>
+                </div>
+            </td>
+        </tbody>
+        <?php endforeach; ?>
+    </table>
+    <div class="d-grid">
+        <a class="btn btn-primary btn-block" href="/my/pets/new">new</a>
+    </div>
+    <?php require  __DIR__ . '/../paginator/_pages.phtml' ?>
+</div>
