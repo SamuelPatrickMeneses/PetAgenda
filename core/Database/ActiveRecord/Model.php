@@ -126,6 +126,13 @@ abstract class Model
         }
 
         return null;
+    }  
+    /**
+     * @return array<string, string>
+     */
+    public function getErrors()
+    {
+      return $this->errors;
     }
 
     public function addError(string $index, string $value): void
@@ -280,8 +287,13 @@ abstract class Model
 
         return $models;
     }
-
-    public static function paginate(int $page = 1, int $per_page = 10, ?string $route = null): Paginator
+    /**
+     * @param array<string, mixed> $conditions
+     * @param int $page
+     * @param int $per_page
+     * @return Paginator
+     */
+    public static function paginate(int $page = 1, int $per_page = 10, ?string $route = null, array $conditions = []): Paginator
     {
         return new Paginator(
             class: static::class,
@@ -289,7 +301,8 @@ abstract class Model
             per_page: $per_page,
             table: static::$table,
             attributes: static::$columns,
-            route: $route
+            route: $route,
+            conditions: $conditions
         );
     }
 
