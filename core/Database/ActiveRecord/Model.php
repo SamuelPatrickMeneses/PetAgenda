@@ -85,6 +85,11 @@ abstract class Model
 
         throw new \Exception("Property {$property} not found in " . static::class);
     }
+    public function __isset(string $name): bool
+    {
+      $temp = $this->__get($name);
+      return isset($temp);      
+    }
 
     public static function table(): string
     {
