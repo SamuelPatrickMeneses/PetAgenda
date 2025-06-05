@@ -59,7 +59,7 @@ class Pet extends Model
         } else {
             $this->description = null;
         }
-        if (isset($this->birth_date)) {
+        if (isset($this->birth_date) && $this->birth_date !== '') {
             Validations::match('birth_date', '/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', $this);
         } else {
             $this->birth_date = null;
