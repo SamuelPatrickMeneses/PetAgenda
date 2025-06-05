@@ -91,7 +91,7 @@ class PetController extends Controller
                 }
             }
             $pet = Pet::findById($req->getParam('id'));
-            if ($pet && $pet->user_id === Auth::user()->id) {
+            if ($pet !== null && $pet->user_id === Auth::user()->id) {
                 if ($pet->update($param)) {
                     FlashMessage::success('update with success');
                     $this->redirectTo(route('user.pets.view'));
@@ -99,9 +99,11 @@ class PetController extends Controller
                     foreach ($pet->getErrors() as $error) {
                         FlashMessage::danger($error);
                     }
-                    $this->render('pet/edit', compact('pet'));
+                    $title = 'Seus Pets';
+                    $this->render('pet/edit', compact('pet', 'title'));
                 }
-                $this->render('pet/edit', compact('pet'));
+                $title = 'Seus Pets';
+                $this->render('pet/edit', compact('pet', 'title'));
             } else {
                 FlashMessage::danger('não altorisado');
                 $this->redirectTo(route('user.pets.view'));
