@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Lib\Validations;
 use Core\Database\ActiveRecord\Model;
+use Core\Debug\Debugger;
 use Lib\Paginator;
 
 /**
@@ -59,8 +60,8 @@ class Pet extends Model
         } else {
             $this->description = null;
         }
-        if (isset($this->birth_date) && $this->birth_date !== '') {
-            Validations::match('birth_date', '/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', $this);
+        if (isset($this->birth_date) && strlen($this->birth_date) !== 0) {
+            Validations::isDate('birth_date', $this);
         } else {
             $this->birth_date = null;
         }
@@ -70,12 +71,12 @@ class Pet extends Model
             $this->photo_url = null;
         }
         if (isset($this->created_at)) {
-            Validations::match('created_at', '/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', $this);
+            Validations::isDate('created_at', $this);
         } else {
             $this->created_at = null;
         }
         if (isset($this->updated_at)) {
-            Validations::match('updated_at', '/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', $this);
+            Validations::isDate('updated_at', $this);
         } else {
             $this->updated_at = null;
         }
