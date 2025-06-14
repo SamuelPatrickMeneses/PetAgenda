@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Pet;
+use Core\Debug\Debugger;
 use Core\Http\Controllers\Controller;
 use Core\Http\Request;
 use Lib\Authentication\Auth;
@@ -35,7 +36,12 @@ class PetController extends Controller
           'birth_date' => $req->getParam('birth_date'),
           'weight' => $req->getParam('weight'),
         ]);
-        $pet->validates();
+        $image = $_FILES['image'];
+        if (isset($image) && isset($image['name'])) {
+            $pet->image_name = $image['name'];
+            $pet->image_temp_name = $image['tmp_name'];
+            $pet->image_size = $image['size'];
+        }
         if ($pet->save()) {
             FlashMessage::success('success');
             $this->redirectTo(route('user.pets.view'));
@@ -92,6 +98,12 @@ class PetController extends Controller
             }
             $pet = Pet::findById($req->getParam('id'));
             if ($pet !== null && $pet->user_id === Auth::user()->id) {
+                $image = $_FILES['image'];
+                if (isset($image) && isset($image['name'])) {
+                    $pet->image_name = $image['name'];
+                    $pet->image_temp_name = $image['tmp_name'];
+                    $pet->image_size = $image['size'];
+                }
                 if ($pet->update($param)) {
                     FlashMessage::success('update with success');
                     $this->redirectTo(route('user.pets.view'));
