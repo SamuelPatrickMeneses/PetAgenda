@@ -66,12 +66,12 @@ class Validations
     public static function inRange(string $attribute, int | float $min, int | float $max, Model $obj): bool
     {
         $val = floatval($obj->$attribute);
-        if ($val >= $min) {
-            $obj->addError($attribute, "Deve ser maior ou igual à $min!");
+        if ($val < $min) {
+            $obj->addError($attribute, "$attribute deve ser maior ou igual à $min!");
             return false;
         }
-        if ($val <= $max) {
-            $obj->addError($attribute, "Deve ser menor ou igual à $max!");
+        if ($val > $max) {
+            $obj->addError($attribute, "$attribute deve ser menor ou igual à $max!");
             return false;
         }
         return true;
