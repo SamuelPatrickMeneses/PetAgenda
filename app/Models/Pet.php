@@ -20,6 +20,9 @@ use Lib\Paginator;
  * @property string | null $created_at
  * @property string | null $updated_at
  * @property string $active
+ * @property string $image_name;
+ * @property string $image_size;
+ * @property string $image_temp_name;
  */
 class Pet extends Model
 {
@@ -41,6 +44,11 @@ class Pet extends Model
     * @var array<string>
     */
     public static array $species = ['cachorro','gato','ave','roedor','reptil','outro'];
+
+    public const int MAX_IMAGE_ACEPTED_SIZE = (2 * 1048576);// 2MB
+    public string $image_name;
+    public int $image_size;
+    public string $image_temp_name;
 
     public function validates(): void
     {
@@ -87,6 +95,13 @@ class Pet extends Model
         } else {
             $this->weight = null;
         }
+
+        if (isset($this->image_name) && $this->image_name !== '') {
+            Validations::match('image_name', '/^.*\.(jpeg|jpg|png)$/', $this);
+            Validations::inRange('image_size', 1, self::MAX_IMAGE_ACEPTED_SIZE, $this);
+        } else {
+            unset($this->image_name);
+        }
     }
 
     public function save(): bool
@@ -96,6 +111,14 @@ class Pet extends Model
             $this->active = '1';
         } else {
             $this->updated_at = gmdate('Y-m-d');
+        }
+        if (isset($this->image_name) && $this->image_name !== '' && $this->isValid()) {
+            if (isset($this->photo_url)) {
+                unlink(__DIR__ . '../../public/assets/uploads/' . $this->photo_url);
+            }
+            $tokens = explode('.', $this->image_name);
+            $this->photo_url = md5(uniqid()) . '.' . array_pop($tokens);
+            move_uploaded_file($this->image_temp_name, __DIR__ . '/../../public/assets/uploads/' . $this->photo_url);
         }
         return parent::save();
     }
@@ -121,7 +144,10 @@ class Pet extends Model
 
     public function unactivate(): bool
     {
-        return $this->update(['active' => '0']);
+        if (isset($this->photo_url)) { 
+            unlink(__DIR__ . '/../../public/assets/uploads/' . $this->photo_url);
+        }
+        return $this->update(['active' => '0', 'photo_url' => null]);
     }
 
     public function activate(): bool
@@ -131,13 +157,10 @@ class Pet extends Model
 
     public function update(array $data): bool
     {
-        if (count($data)) {
-            foreach ($data as $key => $val) {
-                $this->$key = $val;
-            }
-            $this->updated_at = gmdate('Y-m-d');
-            return $this->save();
+        foreach ($data as $key => $val) {
+            $this->$key = $val;
         }
-        return false;
+        $this->updated_at = gmdate('Y-m-d');
+        return $this->save();
     }
 }
