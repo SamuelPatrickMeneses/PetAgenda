@@ -11,38 +11,40 @@
                 <th scope="col"></th>
             </tr>
         </thead>
+        <tbody>
         <?php
           $pets = $paginator->registers();
           $i = 1;
           foreach($pets as $pet):
         ?>
-        <tbody>
-            <td><?= $i++ ?></td>
-            <td id="<?= $pet->name ?>" ><?= $pet->name ?></td>
-            <td><?= $pet->specie ?? '' ?></td>
-            <td><?= $pet->breed ?? '' ?></td>
-            <td><?= $pet->birth_date ?? '' ?></td>
-            <td> 
-                <div class="d-grid">
-                    <form  action="/my/pets/delete/<?= $pet->id ?>" method="POST">
-                        <input type="hidden" id="_method" name="_method" value="DELETE" />
-                        <input 
-                            class="btn btn-danger btn-block" 
-                            type="submit" 
-                            id="delete-<?= $pet->id?>"
-                            value="delete"
-                           >
-                             
-                    <form>
-                </div>
-            </td>
-            <td> 
-                <div class="d-grid">
-                    <a class="btn btn-primary btn-block" id="edit-<?= $pet->id?>" href="/my/pets/edit/<?= $pet->id ?>">edite</a>
-                </div>
-            </td>
-        </tbody>
+            <tr>
+                <td><?= $i++ ?></td>
+                <td id="<?= $pet->name ?>" ><?= $pet->name ?></td>
+                <td><?= $pet->specie ?? '' ?></td>
+                <td><?= $pet->breed ?? '' ?></td>
+                <td><?= $pet->birth_date ?? '' ?></td>
+                <td> 
+                    <div class="d-grid">
+                        <form  action="/my/pets/delete/<?= $pet->id ?>" method="POST">
+                            <input type="hidden" id="_method" name="_method" value="DELETE" />
+                            <input 
+                                class="btn btn-danger btn-block" 
+                                type="submit" 
+                                id="delete-<?= $pet->id?>"
+                                value="delete"
+                               >
+                                 
+                        <form>
+                    </div>
+                </td>
+                <td> 
+                    <div class="d-grid">
+                        <a class="btn btn-primary btn-block" id="edit-<?= $pet->id?>" href="/my/pets/edit/<?= $pet->id ?>">edite</a>
+                    </div>
+                </td>
+            </tr>
         <?php endforeach; ?>
+        </tbody>
     </table>
     <div class="d-grid">
         <a class="btn btn-primary btn-block" href="/my/pets/new">new</a>
