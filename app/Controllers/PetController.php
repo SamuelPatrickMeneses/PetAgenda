@@ -47,7 +47,11 @@ class PetController extends Controller
             $this->redirectTo(route('user.pets.view'));
         } else {
             foreach ($pet->getErrors() as $error) {
-                FlashMessage::danger($error);
+                if ($error === "Don't math the patern /^.*\.(jpeg|jpg|png)$/") {
+                    FlashMessage::danger('Nome ou formato de imagem invalido!');
+                } else {
+                    FlashMessage::danger($error);
+                }
             }
             $this->redirectTo(route('user.pets.create'));
         }
@@ -109,7 +113,11 @@ class PetController extends Controller
                     $this->redirectTo(route('user.pets.view'));
                 } else {
                     foreach ($pet->getErrors() as $error) {
-                        FlashMessage::danger($error);
+                        if ($error === "Don't math the patern /^.*\.(jpeg|jpg|png)$/") {
+                            FlashMessage::danger('Nome ou formato de imagem invalido!');
+                        } else {
+                            FlashMessage::danger($error);
+                        }
                     }
                     $title = 'Seus Pets';
                     $this->render('pet/edit', compact('pet', 'title'));
