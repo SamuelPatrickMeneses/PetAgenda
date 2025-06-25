@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Core\Constants\Constants;
 use Lib\Validations;
 use Core\Database\ActiveRecord\Model;
 use Core\Debug\Debugger;
@@ -114,11 +115,11 @@ class Pet extends Model
         }
         if (isset($this->image_name) && $this->image_name !== '' && $this->isValid()) {
             if (isset($this->photo_url)) {
-                unlink(__DIR__ . '../../public/assets/uploads/' . $this->photo_url);
+                unlink(Constants::rootPath()->join('public/assets/uploads/' . $this->photo_url));
             }
             $tokens = explode('.', $this->image_name);
             $this->photo_url = md5(uniqid()) . '.' . array_pop($tokens);
-            move_uploaded_file($this->image_temp_name, __DIR__ . '/../../public/assets/uploads/' . $this->photo_url);
+            move_uploaded_file($this->image_temp_name, Constants::rootPath()->join('public/assets/uploads/' . $this->photo_url));
         }
         return parent::save();
     }
@@ -144,8 +145,8 @@ class Pet extends Model
 
     public function unactivate(): bool
     {
-        if (isset($this->photo_url)) { 
-            unlink(__DIR__ . '/../../public/assets/uploads/' . $this->photo_url);
+        if (isset($this->photo_url)) {
+            unlink(Constants::rootPath()->join('public/assets/uploads/' . $this->photo_url));
         }
         return $this->update(['active' => '0', 'photo_url' => null]);
     }
