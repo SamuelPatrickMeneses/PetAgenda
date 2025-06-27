@@ -101,7 +101,7 @@ class Pet extends Model
             Validations::match('image_name', '/^.*\.(jpeg|jpg|png)$/', $this);
             Validations::inRange('image_size', 1, self::MAX_IMAGE_ACEPTED_SIZE, $this);
         } else {
-            unset($this->image_name);
+            $this->image_name = '';
         }
     }
 
