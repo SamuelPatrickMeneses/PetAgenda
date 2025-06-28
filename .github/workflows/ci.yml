@@ -45,6 +45,9 @@ jobs:
       - name: Create .env
         run: cp .env.example .env
 
+      - name: Setup Uploads assets permissions
+        run: sudo chown -R www-data:www-data public/assets/uploads
+
       - name: Composer install
         run: ./run composer install
 
