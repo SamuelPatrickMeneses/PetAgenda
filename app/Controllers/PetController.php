@@ -108,6 +108,7 @@ class PetController extends Controller
                     $pet->image_temp_name = $image['tmp_name'];
                     $pet->image_size = $image['size'];
                 }
+
                 if ($pet->update($param)) {
                     FlashMessage::success('update with success');
                     $this->redirectTo(route('user.pets.view'));
