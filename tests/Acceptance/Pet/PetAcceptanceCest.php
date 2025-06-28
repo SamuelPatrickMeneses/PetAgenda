@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Acceptance\User;
+namespace Tests\Acceptance\Pet;
 
 use App\Models\Pet;
 use Tests\Acceptance\BaseAcceptanceCest;
