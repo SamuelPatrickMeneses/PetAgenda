@@ -6,6 +6,7 @@ use Core\Constants\Constants;
 use Lib\Validations;
 use Core\Database\ActiveRecord\Model;
 use Core\Debug\Debugger;
+use Lib\FileSystemHelper;
 use Lib\Paginator;
 
 /**
@@ -22,7 +23,8 @@ use Lib\Paginator;
  * @property string | null $updated_at
  * @property string $active
  * @property string $image_name;
- * @property string $image_size;
+ * @property string $image_type;
+ * @property int $image_size;
  * @property string $image_temp_name;
  */
 class Pet extends Model
@@ -48,6 +50,7 @@ class Pet extends Model
 
     public const int MAX_IMAGE_ACEPTED_SIZE = (2 * 1048576);// 2MB
     public string $image_name;
+    public string $image_type;
     public int $image_size;
     public string $image_temp_name;
 
@@ -100,6 +103,11 @@ class Pet extends Model
         if (isset($this->image_name) && $this->image_name !== '') {
             Validations::match('image_name', '/^.*\.(jpeg|jpg|png)$/', $this);
             Validations::inRange('image_size', 1, self::MAX_IMAGE_ACEPTED_SIZE, $this);
+            Validations::isString('image_type', $this);
+            Validations::inEnum('image_type', [
+              'image/png',
+              'image/jpeg'
+            ], $this);
         } else {
             $this->image_name = '';
         }
@@ -119,7 +127,10 @@ class Pet extends Model
             }
             $tokens = explode('.', $this->image_name);
             $this->photo_url = md5(uniqid()) . '.' . array_pop($tokens);
-            move_uploaded_file($this->image_temp_name, Constants::rootPath()->join('public/assets/uploads/' . $this->photo_url));
+            FileSystemHelper::move(
+                $this->image_temp_name,
+                Constants::rootPath()->join('public/assets/uploads/' . $this->photo_url)
+            );
         }
         return parent::save();
     }
