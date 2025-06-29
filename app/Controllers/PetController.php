@@ -41,6 +41,7 @@ class PetController extends Controller
             $pet->image_name = $image['name'];
             $pet->image_temp_name = $image['tmp_name'];
             $pet->image_size = $image['size'];
+            $pet->image_type = $image['type'];
         }
         if ($pet->save()) {
             FlashMessage::success('success');
@@ -107,6 +108,7 @@ class PetController extends Controller
                     $pet->image_name = $image['name'];
                     $pet->image_temp_name = $image['tmp_name'];
                     $pet->image_size = $image['size'];
+                    $pet->image_type = $image['type'];
                 }
 
                 if ($pet->update($param)) {
