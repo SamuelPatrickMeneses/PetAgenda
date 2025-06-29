@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use App\Models\Pet;
 use App\Models\User;
+use Core\Constants\Constants;
 use Tests\TestCase;
 
 class PetTest extends TestCase
@@ -39,6 +40,52 @@ class PetTest extends TestCase
         'weight' => '2.5',
         ]);
         $this->pet2->save();
+    }
+
+    public function testUpload(): void
+    {
+        $originalPath = Constants::rootPath()->join('tests/Support/Data/avatar_test.jpg');
+        $tempFile = tempnam(sys_get_temp_dir(), 'img_test_');
+        $tempFileWithExtension = $tempFile . '.jpg';
+        rename($tempFile, $tempFileWithExtension);
+        copy($originalPath, $tempFileWithExtension);
+        $this->pet1->image_temp_name = $tempFileWithExtension;
+        $this->pet1->image_name = 'avatar_test.jpg';
+        $this->pet1->image_size = 1024;
+        $this->pet1->image_type = 'image/jpeg';
+        $this->assertTrue($this->pet1->save());
+        $this->assertTrue(file_exists('public/assets/uploads/' . $this->pet1->photo_url));
+        unlink(Constants::rootPath()->join('public/assets/uploads/' . $this->pet1->photo_url));
+    }
+
+    public function testInvalidImegeSize(): void
+    {
+        $originalPath = Constants::rootPath()->join('tests/Support/Data/avatar_test.jpg');
+        $tempFile = tempnam(sys_get_temp_dir(), 'img_test_');
+        $tempFileWithExtension = $tempFile . '.jpg';
+        rename($tempFile, $tempFileWithExtension);
+        copy($originalPath, $tempFileWithExtension);
+        $this->pet1->image_temp_name = $tempFileWithExtension;
+        $this->pet1->image_name = 'avatar_test.jpg';
+        $this->pet1->image_size = 0;
+        $this->pet1->image_type = 'image/jpeg';
+        $this->assertFalse($this->pet1->isValid());
+        unlink($tempFileWithExtension);
+    }
+
+    public function testInvalidImegeName(): void
+    {
+        $originalPath = Constants::rootPath()->join('tests/Support/Data/avatar_test.jpg');
+        $tempFile = tempnam(sys_get_temp_dir(), 'img_test_');
+        $tempFileWithExtension = $tempFile . '.jpg';
+        rename($tempFile, $tempFileWithExtension);
+        copy($originalPath, $tempFileWithExtension);
+        $this->pet1->image_temp_name = $tempFileWithExtension;
+        $this->pet1->image_name = 'avatar_test.txt';
+        $this->pet1->image_size = 1024;
+        $this->pet1->image_type = 'image/jpeg';
+        $this->assertFalse($this->pet1->isValid());
+        unlink($tempFileWithExtension);
     }
 
     public function testChekBreed(): void
