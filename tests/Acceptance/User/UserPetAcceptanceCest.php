@@ -14,7 +14,7 @@ class UserPetAcceptanceCest extends BaseAcceptanceCest
         $page->see('Home');
         $page->amOnPage('/my/pets#pitokinho');
         $page->see('Seus pets');
-        $page->see('pitokinho', '#pitokinho');
+        $page->see('pitokinho', 'h4');
     }
     public function deletePet(AcceptanceTester $page): void
     {

@@ -41,11 +41,20 @@
       <input type="date" class="form-control" id="birth_date" name="birth_date" value="<?= $pet->birth_date?>">
   </div>
   
-  <!-- Foto 
-  <div class="mb-3">
-      <label for="photo" class="form-label">Foto do Pet</label>
-      <input class="form-control" type="file" id="photo" name="photo" accept="image/*" >
-  </div> -->
+  <div class="mb-3 d-flex flex-row align-items-stretch justify-content-around card py-3 bg-gray-500 ">
+
+    <?php if (isset($pet->photo_url)) { ?>
+        <div class="col-3">
+          <img class="img-fluid" src="<?= '/assets/uploads/' . $pet->photo_url?>"/>
+        </div>
+    <?php }?>
+
+    <div class="d-flex justify-content-center flex-column">
+      <label for="image" class="form-label">Foto do Pet</label>
+      <input class="form-control" type="file" id="image" name="image" accept="image/*" >
+    </div>
+
+  </div> 
   
   
   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
