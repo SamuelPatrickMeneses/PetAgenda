@@ -47,4 +47,26 @@ CREATE TABLE `pets` (
   FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
+
+DROP TABLE IF EXISTS `employee_shifts`;
+
+CREATE TABLE `employee_shifts` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `auth_id` int COMMENT 'FK com validação de role_type=''staff''',
+  `day_of_week` enum('seg','ter','qua','qui','sex','sab','dom') NOT NULL, 
+  `start_time` time NOT NULL COMMENT 'Formato HH:MM',
+  `end_time` time NOT NULL,
+  `is_recurring` boolean DEFAULT true COMMENT 'Se aplica semanalmente'
+);
+
+DROP TABLE IF EXISTS `employee_absences`;
+
+CREATE TABLE `employee_absences` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `auth_id` int,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL COMMENT 'Inclusivo',
+  `reason` enum('ferias','licenca','treinamento','outro') NOT NULL,
+  `description` text
+);
 SET foreign_key_checks = 1;
